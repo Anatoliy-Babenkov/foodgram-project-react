@@ -83,4 +83,4 @@ class Subscribe(models.Model):
                                               name='no_self_follow'))
 
     def __str__(self) -> str:
-        return f"{self.user} подписан на {self.author}"
+        return f'{self.user} подписан на {self.author}'

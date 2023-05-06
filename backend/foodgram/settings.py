@@ -1,5 +1,4 @@
 import os
-import socket
 
 from dotenv import load_dotenv
 
@@ -9,15 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'default-value')
 
-if socket.gethostname().startswith('local'):
-    DJANGO_HOST = 'testing'
-else:
-    DJANGO_HOST = 'production'
-
-if DJANGO_HOST == 'production':
-    DEBUG = False
-else:
-    DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = ['*']
 
@@ -150,20 +141,6 @@ HEX_NAME = 7
 
 FILE_NAME = 'shopping_list.txt'
 
-CONTENT_TYPE = 'text/plain'
-
 MIN_COOKING_TIME = 1
 
 MIN_AMOUNT_INGREDIENTS = 1
-
-
-class ErrorMessage:
-    SELF_FOLLOWING_ERROR = 'Нельзя подписаться на самого себя'
-    ADD_FOLLOWING_ERROR = 'Подписка уже оформлена'
-    NO_TAG_ERROR = 'Нет указанного тега'
-    NO_INGREDIENT_ERROR = 'Ингридиенты не указаны'
-    RELAPSE_INGREDIENT_ERROR = 'Ингридиенты повторяются'
-    AMOUNT_INGREDIENT_ERROR = 'Объём ингридиента не указан'
-    RECIPE_IN_FAVORITE_ERROR = 'Рецепт уже в избранном'
-    MIN_TIME_ERROR = f'Время готовки не должно быть менее {MIN_COOKING_TIME} минуты'
-    RECIPE_IN_CART_ERROR = 'Рецепт уже в корзине'

@@ -10,10 +10,7 @@ from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 
-from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
-                            ShoppingCart, Tag)
-from users.models import Subscribe, User
-
+from api.core import CONTENT_TYPE
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
@@ -21,6 +18,9 @@ from api.serializers import (CreateRecipeSerializer, FavoriteSerializer,
                              IngredientSerializer, RecipeReadSerializer,
                              ShoppingCartSerializer, SubscribeListSerializer,
                              TagSerializer, UserSerializer)
+from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
+                            ShoppingCart, Tag)
+from users.models import Subscribe, User
 
 
 class HTTPMethod:
@@ -73,7 +73,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f"({ingredient['ingredient__measurement_unit']}) - "
                 f"{ingredient['amount']}")
         file = s.FILE_NAME
-        response = HttpResponse(shopping_list, content_type=s.CONTENT_TYPE)
+        response = HttpResponse(shopping_list, content_type=CONTENT_TYPE)
         response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
         return response
 
@@ -113,7 +113,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=(IsAuthenticated, )
             )
     def favorite(self, request, pk):
-        context = {"request": request}
+        context = {'request': request}
         recipe = get_object_or_404(Recipe, id=pk)
         data = {'user': request.user.id, 'recipe': recipe.id}
         serializer = FavoriteSerializer(data=data, context=context)

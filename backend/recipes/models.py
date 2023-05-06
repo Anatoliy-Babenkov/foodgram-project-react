@@ -36,7 +36,7 @@ class Tag(models.Model):
                        format='hex',
                        max_length=s.HEX_NAME,
                        validators=(RegexValidator(
-                           regex="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+                           regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
                            message='Проверьте введённые данные'), ))
     name = models.CharField(max_length=s.RECIPE_NAME,
                             unique=True,
@@ -69,7 +69,8 @@ class Recipe(models.Model):
         'Время готовки',
         validators=(MinValueValidator(
             s.MIN_COOKING_TIME,
-            message='Время приготовления не должно быть менее 1 минуты!'), ))
+            message='Время приготовления не должно быть менее '
+                    f'{s.MIN_COOKING_TIME} минуты!'), ))
     author = models.ForeignKey(User,
                                null=True,
                                verbose_name='Автор',

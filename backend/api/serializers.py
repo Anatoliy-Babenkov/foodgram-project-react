@@ -10,7 +10,7 @@ from rest_framework.fields import SerializerMethodField
 
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
-
+from api.core import ErrorMessage
 User = get_user_model()
 
 
@@ -57,12 +57,12 @@ class SubscribeListSerializer(UserSerializer):
         user = self.context.get('request').user
         if user.follower.filter(author=author_id).exists():
             raise ValidationError(
-                detail=s.ErrorMessage.ADD_FOLLOWING_ERROR,
+                detail=ErrorMessage.ADD_FOLLOWING_ERROR,
                 code=status.HTTP_400_BAD_REQUEST,
             )
         if user == author:
             raise ValidationError(
-                detail=s.ErrorMessage.SELF_FOLLOWING_ERROR,
+                detail=ErrorMessage.SELF_FOLLOWING_ERROR,
                 code=status.HTTP_400_BAD_REQUEST,
             )
         return data
@@ -167,29 +167,26 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
     def validate_tags(self, tags):
         for tag in tags:
             if not Tag.objects.filter(id=tag.id).exists():
-                raise serializers.ValidationError(
-                    s.ErrorMessage.NO_TAG_ERROR)
+                raise serializers.ValidationError(ErrorMessage.NO_TAG_ERROR)
         return tags
 
     def validate_cooking_time(self, cooking_time):
         if cooking_time < s.MIN_COOKING_TIME:
-            raise serializers.ValidationError(
-                s.ErrorMessage.MIN_TIME_ERROR)
+            raise serializers.ValidationError(ErrorMessage.MIN_TIME_ERROR)
         return cooking_time
 
     def validate_ingredients(self, ingredients):
         ingredients_list = []
         if not ingredients:
-            raise serializers.ValidationError(
-                s.ErrorMessage.NO_INGREDIENT_ERROR)
+            raise serializers.ValidationError(ErrorMessage.NO_INGREDIENT_ERROR)
         for ingredient in ingredients:
             if ingredient['id'] in ingredients_list:
                 raise serializers.ValidationError(
-                    s.ErrorMessage.RELAPSE_INGREDIENT_ERROR)
+                    ErrorMessage.RELAPSE_INGREDIENT_ERROR)
             ingredients_list.append(ingredient['id'])
             if int(ingredient.get('amount')) < s.MIN_AMOUNT_INGREDIENTS:
                 raise serializers.ValidationError(
-                    s.ErrorMessage.AMOUNT_INGREDIENT_ERROR)
+                    ErrorMessage.AMOUNT_INGREDIENT_ERROR)
         return ingredients
 
     @staticmethod
@@ -249,7 +246,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
         user = data['user']
         if user.favorites.filter(recipe=data['recipe']).exists():
             raise serializers.ValidationError(
-                s.ErrorMessage.RECIPE_IN_FAVORITE_ERROR
+                ErrorMessage.RECIPE_IN_FAVORITE_ERROR
             )
         return data
 
@@ -271,7 +268,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         user = data['user']
         if user.shopping_list.filter(recipe=data['recipe']).exists():
             raise serializers.ValidationError(
-                s.ErrorMessage.RECIPE_IN_CART_ERROR)
+                ErrorMessage.RECIPE_IN_CART_ERROR)
         return data
 
     def to_representation(self, instance):
