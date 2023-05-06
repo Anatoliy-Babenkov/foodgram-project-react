@@ -1,3 +1,4 @@
+from django.conf import settings as s
 from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -20,6 +21,12 @@ from api.serializers import (CreateRecipeSerializer, FavoriteSerializer,
                              IngredientSerializer, RecipeReadSerializer,
                              ShoppingCartSerializer, SubscribeListSerializer,
                              TagSerializer, UserSerializer)
+
+
+class HTTPMethod:
+    GET = 'GET'
+    POST = 'POST'
+    DELETE = 'DELETE'
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -53,7 +60,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
+        if self.request.method == HTTPMethod.GET:
             return RecipeReadSerializer
         return CreateRecipeSerializer
 
@@ -65,12 +72,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f"\n{ingredient['ingredient__name']} "
                 f"({ingredient['ingredient__measurement_unit']}) - "
                 f"{ingredient['amount']}")
-        file = 'shopping_list.txt'
-        response = HttpResponse(shopping_list, content_type='text/plain')
+        file = s.FILE_NAME
+        response = HttpResponse(shopping_list, content_type=s.CONTENT_TYPE)
         response['Content-Disposition'] = f'attachment; filename="{file}.txt"'
         return response
 
-    @action(detail=False, methods=('GET', ))
+    @action(detail=False, methods=(HTTPMethod.GET, ))
     def download_shopping_cart(self, request):
         ingredients = IngredientRecipe.objects.filter(
             recipe__shopping_list__user=request.user
@@ -80,7 +87,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return self.send_message(ingredients)
 
     @action(detail=True,
-            methods=('POST', ),
+            methods=(HTTPMethod.POST, ),
             permission_classes=(IsAuthenticated, )
             )
     def shopping_cart(self, request, pk):
@@ -102,7 +109,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True,
-            methods=('POST', ),
+            methods=(HTTPMethod.POST, ),
             permission_classes=(IsAuthenticated, )
             )
     def favorite(self, request, pk):
@@ -132,14 +139,14 @@ class UserViewSet(UserViewSet):
     pagination_class = CustomPagination
 
     @action(detail=True,
-            methods=('post', 'delete'),
+            methods=(HTTPMethod.POST, HTTPMethod.DELETE),
             permission_classes=(IsAuthenticated, )
             )
     def subscribe(self, request, id):
         user = request.user
         author = get_object_or_404(User, pk=id)
 
-        if request.method == 'POST':
+        if request.method == HTTPMethod.POST:
             serializer = SubscribeListSerializer(author,
                                                  data=request.data,
                                                  context={'request': request})
@@ -147,7 +154,7 @@ class UserViewSet(UserViewSet):
             Subscribe.objects.create(user=user, author=author)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        if request.method == 'DELETE':
+        if request.method == HTTPMethod.DELETE:
             get_object_or_404(Subscribe, user=user, author=author).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 

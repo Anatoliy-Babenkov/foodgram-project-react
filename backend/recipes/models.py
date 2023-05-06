@@ -67,8 +67,9 @@ class Recipe(models.Model):
     text = models.TextField('Описание')
     cooking_time = models.PositiveSmallIntegerField(
         'Время готовки',
-        validators=[MinValueValidator(
-            1, message='Время приготовления не должно быть менее 1 минуты!')])
+        validators=(MinValueValidator(
+            s.MIN_COOKING_TIME,
+            message='Время приготовления не должно быть менее 1 минуты!'), ))
     author = models.ForeignKey(User,
                                null=True,
                                verbose_name='Автор',
@@ -84,14 +85,14 @@ class Recipe(models.Model):
         return self.name
 
 
-class FavoriteShoppingCart(models.Model):
+class BaseFavoriteShoppingCart(models.Model):
     """Модель списка покупок и избранного."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
-
     )
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -100,30 +101,27 @@ class FavoriteShoppingCart(models.Model):
 
     class Meta:
         abstract = True
-        constraints = [
-            UniqueConstraint(
-                fields=('user', 'recipe'),
-                name='%(app_label)s_%(class)s_unique'
-            )
-        ]
+        constraints = (
+            UniqueConstraint(fields=('user', 'recipe'),
+                             name='%(app_label)s_%(class)s_unique'), )
 
     def __str__(self):
         return f'{self.user} :: {self.recipe}'
 
 
-class Favorite(FavoriteShoppingCart):
+class Favorite(BaseFavoriteShoppingCart):
     """Модель избраного."""
 
-    class Meta(FavoriteShoppingCart.Meta):
+    class Meta(BaseFavoriteShoppingCart.Meta):
         default_related_name = 'favorites'
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
 
 
-class ShoppingCart(FavoriteShoppingCart):
+class ShoppingCart(BaseFavoriteShoppingCart):
     """Модель корзины покупок."""
 
-    class Meta(FavoriteShoppingCart.Meta):
+    class Meta(BaseFavoriteShoppingCart.Meta):
         default_related_name = 'shopping_list'
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзина'
@@ -135,7 +133,8 @@ class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        verbose_name='Ингредиент'
+        verbose_name='Ингредиент',
+        related_name='recipetoingredients'
     )
     recipe = models.ForeignKey(
         Recipe,
@@ -144,7 +143,7 @@ class IngredientRecipe(models.Model):
         related_name='ingredienttorecipe'
     )
     amount = models.PositiveSmallIntegerField(
-        validators=(MinValueValidator(1), ),
+        validators=(MinValueValidator(s.MIN_AMOUNT_INGREDIENTS), ),
         verbose_name='Объём ингредиента'
     )
 
