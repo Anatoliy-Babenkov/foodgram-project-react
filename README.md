@@ -79,7 +79,7 @@ docker-compose exec backendpython manage.py collectstatic --no-input
 
 <h2><p align="center"></p></h2>
 
-<h2><p align="center">Автор  кода 𝔽𝕠𝕠𝕕𝔾𝕣𝕒𝕞 ℙ𝕣𝕠𝕛𝕖𝕔𝕥:</p></h2>
+<h2><p align="center">Автор кода 𝔽𝕠𝕠𝕕𝔾𝕣𝕒𝕞 ℙ𝕣𝕠𝕛𝕖𝕔𝕥:</p></h2>
 
 <br>
 <br>
