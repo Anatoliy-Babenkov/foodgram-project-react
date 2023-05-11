@@ -10,7 +10,7 @@ services:
     container_name: db
 
   backend:
-    build: ../backend
+    build: babenkovanatoliy/backend_foodgram
     restart: always
     volumes:
       - static_value:/app/static/
@@ -23,7 +23,7 @@ services:
     container_name: backend
 
   frontend:
-    build: ../frontend
+    build: babenkovanatoliy/frontend_foodgram
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
