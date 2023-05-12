@@ -82,7 +82,7 @@ class Recipe(models.Model):
         verbose_name_plural = 'Рецепты'
 
     def __str__(self):
-        return self.name
+        return f'{self.name}, {self.author.email}'
 
 
 class BaseFavoriteShoppingCart(models.Model):
