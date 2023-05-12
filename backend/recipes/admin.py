@@ -14,7 +14,7 @@ class RecipeAdmin(admin.ModelAdmin):
     """Администрирование рецептов."""
 
     list_display = ('author',
-                    'email',
+                    'author__email',
                     'name',
                     'cooking_time',
                     'get_favorites',
