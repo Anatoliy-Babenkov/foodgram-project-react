@@ -15,3 +15,7 @@ class UserAdmin(UserAdmin):
 @admin.register(Subscribe)
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('user', 'author')
+    search_fields = ('user__email',
+                     'user__username',
+                     'author__email',
+                     'author__username')
