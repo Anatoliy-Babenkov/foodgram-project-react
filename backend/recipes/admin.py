@@ -66,7 +66,7 @@ class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
     list_display = ('get_author_email', 'user', 'recipe')
-    list_filter = ('get_tags', )
+#    list_filter = ('get_tags', )
     search_fields = ('get_author_email', 'user', 'recipe')
     empty_value_display = '-пусто-'
 
