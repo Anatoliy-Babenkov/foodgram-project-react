@@ -14,17 +14,19 @@ class RecipeAdmin(admin.ModelAdmin):
     """Администрирование рецептов."""
 
     list_display = ('author',
-                    'get_author'
+                    'get_author_email'
                     'name',
                     'cooking_time',
                     'get_favorites',
                     'get_ingredients')
-    search_fields = ('name', 'author')
+    search_fields = ('name', 'author', 'get_author_email')
     list_filter = ('tags', )
     inlines = (IngredientInline, )
     empty_value_display = '-пусто-'
 
-    def get_author(self, obj):
+    @admin.display(
+        description='Почта автора')
+    def get_author_email(self, obj):
         """Получение почты автора."""
         return obj.author.email
 
