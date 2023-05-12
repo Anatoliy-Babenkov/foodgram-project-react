@@ -66,19 +66,8 @@ class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
     list_display = ('user', 'recipe')
-#    list_filter = ('get_tags', )
     search_fields = ('user', 'recipe')
     empty_value_display = '-пусто-'
-
-    def get_author_email(self, obj):
-        """Получение почты автора."""
-        return obj.user.email
-    get_author_email.short_description = "Почта автора"
-
-    def get_tags(self, obj):
-        """Получение ингридиентов."""
-        return obj.recipe.tags.name
-    get_tags.short_description = 'Теги'
 
 
 @admin.register(ShoppingCart)
