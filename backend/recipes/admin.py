@@ -14,7 +14,7 @@ class RecipeAdmin(admin.ModelAdmin):
     """Администрирование рецептов."""
 
     list_display = ('author',
-                    'author__first_name'
+                    'get_author'
                     'name',
                     'cooking_time',
                     'get_favorites',
@@ -24,6 +24,9 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientInline, )
     empty_value_display = '-пусто-'
 
+    def get_author(self, obj):
+        """Получение почты автора."""
+        return obj.author.email
     def get_favorites(self, obj):
         """Получение избранного."""
         return obj.favorites.count()
