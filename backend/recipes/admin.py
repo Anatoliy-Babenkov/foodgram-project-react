@@ -27,6 +27,7 @@ class RecipeAdmin(admin.ModelAdmin):
     def get_author(self, obj):
         """Получение почты автора."""
         return obj.author.email
+
     def get_favorites(self, obj):
         """Получение избранного."""
         return obj.favorites.count()
