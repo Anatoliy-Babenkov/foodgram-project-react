@@ -15,7 +15,17 @@ class UserAdmin(UserAdmin):
 @admin.register(Subscribe)
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('user', 'author')
-    search_fields = ('user__email',
-                     'user__username',
-                     'author__email',
-                     'author__username')
+    search_fields = ('get_user_email',
+                     'user',
+                     'get_author_email',
+                     'author')
+
+    def get_author_email(self, obj):
+        """Получение почты автора."""
+        return obj.author.email
+    get_author_email.short_description = "Почта автора"
+
+    def get_user_email(self, obj):
+        """Получение почты автора."""
+        return obj.user.email
+    get_author_email.short_description = "Почта поль зователя"

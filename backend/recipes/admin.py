@@ -66,6 +66,7 @@ class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
     list_display = ('user', 'recipe')
+    list_filter = ('user', 'recipe')
     search_fields = ('user', 'recipe')
     empty_value_display = '-пусто-'
 
@@ -74,7 +75,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 class ShoppingCartAdmin(admin.ModelAdmin):
     """Администрирование списка покупок."""
 
-    list_display = ('user__email', 'user', 'recipe')
-    list_filter = ('recipe__tags', )
-    search_fields = ('user__email', 'user', 'recipe')
+    list_display = ('recipe', 'user')
+    list_filter = ('recipe', 'user')
+    search_fields = ('user', )
     empty_value_display = '-пусто-'
