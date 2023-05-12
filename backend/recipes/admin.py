@@ -24,8 +24,6 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientInline, )
     empty_value_display = '-пусто-'
 
-    @admin.display(
-        description='Почта автора')
     def get_author_email(self, obj):
         """Получение почты автора."""
         return obj.author.email
