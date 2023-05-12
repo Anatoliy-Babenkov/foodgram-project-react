@@ -65,9 +65,9 @@ class TagAdmin(admin.ModelAdmin):
 class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
-    list_display = ('get_author_email', 'user', 'recipe')
+    list_display = ('user', 'recipe')
 #    list_filter = ('get_tags', )
-    search_fields = ('get_author_email', 'user', 'recipe')
+    search_fields = ('user', 'recipe')
     empty_value_display = '-пусто-'
 
     def get_author_email(self, obj):
@@ -77,7 +77,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 
     def get_tags(self, obj):
         """Получение ингридиентов."""
-        return obj.recipe.tags
+        return obj.recipe.tags.name
     get_tags.short_description = 'Теги'
 
 
