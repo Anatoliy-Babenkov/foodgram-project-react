@@ -5,7 +5,7 @@ from users.models import Subscribe, User
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ('is_staff', 'username', 'email', 'first_name', 'last_name')
+    list_display = ('username', 'email', 'first_name', 'last_name')
     search_fields = ('email', 'username')
     list_filter = ('is_staff', )
     ordering = ('username', )
@@ -26,7 +26,7 @@ class SubscribeAdmin(admin.ModelAdmin):
                      'author')
 
     def get_author_email(self, obj):
-        """Получение  почты автора."""
+        """Получение почты автора."""
         return obj.author.email
     get_author_email.short_description = "Почта автора"
 
