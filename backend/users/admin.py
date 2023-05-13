@@ -5,9 +5,9 @@ from users.models import Subscribe, User
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ('email', 'first_name', 'last_name', 'username')
+    list_display = ('username', 'email', 'first_name', 'last_name')
     search_fields = ('email', 'username')
-    list_filter = ('email', 'last_name')
+    list_filter = ('email', )
     ordering = ('username', )
     empty_value_display = '-пусто-'
 
