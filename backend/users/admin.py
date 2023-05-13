@@ -28,4 +28,4 @@ class SubscribeAdmin(admin.ModelAdmin):
     def get_user_email(self, obj):
         """Получение почты автора."""
         return obj.user.email
-    get_author_email.short_description = "Почта пользователя"
+    get_user_email.short_description = "Почта пользователя"
