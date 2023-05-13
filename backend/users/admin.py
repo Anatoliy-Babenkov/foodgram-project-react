@@ -5,11 +5,16 @@ from users.models import Subscribe, User
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name')
+    list_display = ('is_staff', 'username', 'email', 'first_name', 'last_name')
     search_fields = ('email', 'username')
-    list_filter = ('email', )
+    list_filter = ('is_staff', )
     ordering = ('username', )
     empty_value_display = '-пусто-'
+
+    def is_staff(self, obj):
+        """Получение почты автора."""
+        return obj.is_staff
+    is_staff.short_description = "Администратор"
 
 
 @admin.register(Subscribe)
