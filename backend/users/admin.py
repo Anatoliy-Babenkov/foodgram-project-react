@@ -20,10 +20,7 @@ class UserAdmin(UserAdmin):
 @admin.register(Subscribe)
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_user_email', 'author', 'get_author_email')
-    search_fields = ('get_user_email',
-                     'user',
-                     'get_author_email',
-                     'author')
+    search_fields = ('get_user_email', 'user', 'get_author_email', 'author')
 
     def get_author_email(self, obj):
         """Получение почты автора."""
@@ -31,6 +28,6 @@ class SubscribeAdmin(admin.ModelAdmin):
     get_author_email.short_description = "Почта автора"
 
     def get_user_email(self, obj):
-        """Получение почты автора."""
+        """Получение почты подписчика."""
         return obj.user.email
-    get_user_email.short_description = "Почта пользователя"
+    get_user_email.short_description = "Почта подписчика"
