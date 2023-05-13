@@ -26,7 +26,7 @@ class SubscribeAdmin(admin.ModelAdmin):
                      'author')
 
     def get_author_email(self, obj):
-        """Получение почты автора."""
+        """Получение  почты автора."""
         return obj.author.email
     get_author_email.short_description = "Почта автора"
 
