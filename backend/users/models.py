@@ -66,11 +66,11 @@ class Subscribe(models.Model):
 
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             verbose_name='Автор',
+                             verbose_name='Подписчик',
                              related_name='follower')
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               verbose_name='Подписчик',
+                               verbose_name='Автор',
                                related_name='following')
 
     class Meta:
