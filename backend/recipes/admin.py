@@ -63,18 +63,13 @@ class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
     list_display = ('recipe', 'get_user_email', 'user')
-    list_filter = ('get_recipe_tag', )
+    list_filter = ('recipe__tags', )
     search_fields = ('recipe', 'user__email', 'user')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""
         return obj.user.email
     get_user_email.short_description = "Почта пользователя"
-
-    def get_recipe_tag(self, obj):
-        """Получение тега рецепта."""
-        return obj.recipe.tags
-    get_recipe_tag.short_description = "Тег"
 
 
 @admin.register(ShoppingCart)
@@ -82,15 +77,10 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     """Администрирование списка покупок."""
 
     list_display = ('recipe', 'get_user_email', 'user')
-    list_filter = ('get_recipe_tag', )
+    list_filter = ('recipe__tags', )
     search_fields = ('recipe', 'user__email', 'user')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""
         return obj.user.email
     get_user_email.short_description = "Почта пользователя"
-
-    def get_recipe_tag(self, obj):
-        """Получение тега рецепта."""
-        return obj.recipe.tags
-    get_recipe_tag.short_description = "Тег"
