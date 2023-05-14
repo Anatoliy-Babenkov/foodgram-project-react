@@ -81,6 +81,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     search_fields = ('recipe__name', 'user__email', 'user__username')
 
     def get_user_email(self, obj):
-        """Получение почты пользователя."""
+        """Получение почты  пользователя."""
         return obj.user.email
     get_user_email.short_description = "Почта пользователя"
