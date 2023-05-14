@@ -19,7 +19,7 @@ class RecipeAdmin(admin.ModelAdmin):
                     'cooking_time',
                     'get_favorites',
                     'get_ingredients')
-    search_fields = ('name', 'author', 'get_author_email')
+    search_fields = ('name', 'author__email', 'author__username')
     list_filter = ('tags', )
     inlines = (IngredientInline, )
 
@@ -64,7 +64,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 
     list_display = ('recipe', 'get_user_email', 'user')
     list_filter = ('recipe__tags', )
-    search_fields = ('recipe', 'user__email', 'user')
+    search_fields = ('recipe__name', 'user__email', 'user__username')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""
@@ -78,7 +78,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
     list_display = ('recipe', 'get_user_email', 'user')
     list_filter = ('recipe__tags', )
-    search_fields = ('recipe', 'user__email', 'user')
+    search_fields = ('recipe__name', 'user__email', 'user__username')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""

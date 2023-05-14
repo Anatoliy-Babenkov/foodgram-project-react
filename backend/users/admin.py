@@ -22,9 +22,9 @@ class SubscribeAdmin(admin.ModelAdmin):
                     'get_user_email',
                     'author',
                     'get_author_email')
-    search_fields = ('user',
+    search_fields = ('user__username',
                      'user__email',
-                     'author',
+                     'author__username',
                      'author__email')
     empty_value_display = '-пусто-'
 
