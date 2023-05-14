@@ -62,9 +62,9 @@ class TagAdmin(admin.ModelAdmin):
 class FavoriteAdmin(admin.ModelAdmin):
     """Администрирование управление подписками."""
 
-    list_display = ('get_user_email', 'user', 'recipe')
+    list_display = ('recipe', 'get_user_email', 'user')
     list_filter = ('get_recipe_tag', )
-    search_fields = ('get_user_email', 'user', 'recipe')
+    search_fields = ('recipe', 'user__email', 'user')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""
@@ -73,7 +73,7 @@ class FavoriteAdmin(admin.ModelAdmin):
 
     def get_recipe_tag(self, obj):
         """Получение тега рецепта."""
-        return obj.recipe.tag
+        return obj.recipe.tags
     get_recipe_tag.short_description = "Тег"
 
 
@@ -83,7 +83,7 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
     list_display = ('recipe', 'get_user_email', 'user')
     list_filter = ('get_recipe_tag', )
-    search_fields = ('recipe', 'get_user_email', 'user')
+    search_fields = ('recipe', 'user__email', 'user')
 
     def get_user_email(self, obj):
         """Получение почты пользователя."""
@@ -92,5 +92,5 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
     def get_recipe_tag(self, obj):
         """Получение тега рецепта."""
-        return obj.recipe.tag
+        return obj.recipe.tags
     get_recipe_tag.short_description = "Тег"
